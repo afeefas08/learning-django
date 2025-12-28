@@ -2,18 +2,22 @@ from django.shortcuts import render , redirect
 from django.http import HttpResponse
 from django.urls import reverse
 import logging
+from .models import Post
 
 # Create your views here.
-posts = [
-        {'id':1,'title': 'Post 1','content':'Content of Post 1'},
-        {'id':2,'title': 'Post 2','content':'Content of Post 2'},
-        {'id':3,'title': 'Post 3','content':'Content of Post 3'},
-        {'id':4,'title': 'Post 4','content':'Content of Post 4'},
-]
+
+#Static Demo data
+# posts = [
+#         {'id':1,'title': 'Post 1','content':'Content of Post 1'},
+#         {'id':2,'title': 'Post 2','content':'Content of Post 2'},
+#         {'id':3,'title': 'Post 3','content':'Content of Post 3'},
+#         {'id':4,'title': 'Post 4','content':'Content of Post 4'},
+# ]
 
 def index(request):
     blog_title = 'Latest posts'
-
+    # getting data from post model.
+    posts = Post.objects.all()
     return render(request, 'blogs/index.html',{'blog_title':blog_title, 'posts':posts}) #templates address, variable interpolation
 
 def detail(request, post_id):
