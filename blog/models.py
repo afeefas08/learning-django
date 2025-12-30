@@ -25,3 +25,5 @@ class Post(models.Model):
     def __str__(self):
         return self.title  # not neccesarry, it for good practice.
     
+class AboutUs(models.Model):
+    content = models.TextField()
