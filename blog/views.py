@@ -5,7 +5,7 @@ import logging
 from .models import Post, AboutUs
 from django.http import Http404
 from django.core.paginator import Paginator
-from .forms import ContactForm
+from .forms import ContactForm, RegisterForm
 
 # Create your views here.
 
@@ -52,7 +52,7 @@ def old_url_redirect(request):
 def new_url_view(request):
     return HttpResponse("This is the new URL")
 
-def contact_view(request):
+def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         name = request.POST.get('name')
@@ -71,10 +71,21 @@ def contact_view(request):
             return render(request, 'blogs/contact.html',{'form':form,'name':name,'email':email, 'message':message})
     return render(request, 'blogs/contact.html')
 
-def about_view(request):
+def about(request):
     about_content = AboutUs.objects.first()
     if about_content is None or not about_content.content:
         about_content = "Default content goes here." # Default text
     else:
         about_content = about_content.content
     return render(request, 'blogs/about.html',{'about_content':about_content})
+
+def register(request):
+    form = RegisterForm()
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save() # user data created
+            print('Register success!')
+
+
+    return render(request, 'blogs/register.html',{'form': form})
