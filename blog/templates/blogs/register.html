@@ -22,9 +22,17 @@
                     <div class='alert alert-danger'>
                         <span class='text-danger'>{{error}}</span>
                     </div>
-                    
+
                 {% endfor %}
-            
+
+                <!-- Success Message-->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class='alert alert-success'>
+                            {{message}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 </div>
                 <div class="my-3">
                     <form method="post">
