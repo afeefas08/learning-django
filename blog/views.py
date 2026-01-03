@@ -5,7 +5,7 @@ import logging
 from .models import Post, AboutUs
 from django.http import Http404
 from django.core.paginator import Paginator
-from .forms import ContactForm, LoginForm, RegisterForm
+from .forms import ContactForm, ForgotPasswordForm, LoginForm, RegisterForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login , logout as auth_logout
 
@@ -120,4 +120,7 @@ def logout(request):
     return redirect("blog:index")
 
 def forgot_password(request):
+    if request.method == 'POST':
+        #form 
+        form = ForgotPasswordForm(request.POST)
     return render(request, 'blogs/forgot_password.html')
