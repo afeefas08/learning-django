@@ -17,3 +17,16 @@ class RedirectAuthenticatedUserMiddleware:
             
         response = self.get_response(request)
         return response
+    
+class RestrictUnauthenticatedUserMiddleware:
+    def __init__(self,get_response):
+        self.get_response = get_response
+    
+    def __call__(self, request):
+        restricted_path = [reverse('blog:dashboard')]
+
+        if not request.user.is_authenticated and request.path in restricted_path:
+            return redirect(reverse('blog:login'))
+        
+        response = self.get_response(request) #get response from next middleware / next view function
+        return response
