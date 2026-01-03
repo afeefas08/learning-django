@@ -92,3 +92,6 @@ def register(request):
 
 
     return render(request, 'blogs/register.html',{'form': form})
+
+def login(request):
+    return render(request, 'blogs/login.html')
