@@ -7,6 +7,7 @@ from django.http import Http404
 from django.core.paginator import Paginator
 from .forms import ContactForm, LoginForm, RegisterForm
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login
 
 # Create your views here.
 
@@ -99,5 +100,11 @@ def login(request):
         #login form
         form = LoginForm(request.POST)
         if form.is_valid():
-            print('LOGIN SUCCESS')
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username,password=password)
+            if user is not None:
+                auth_login(request, user)
+                print('LOGIN SUCCESS')
+                return redirect("/dashboard") # redirect to dashboard
     return render(request, 'blogs/login.html',{'form': form})
