@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login , logout as auth_logout
 from django.contrib.auth.models import User
 
-from blog import form
+from blog import forms
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -131,6 +131,7 @@ def logout(request):
     return redirect("blog:index")
 
 def forgot_password(request):
+    form = ForgotPasswordForm()
     if request.method == 'POST':
         #form 
         form = ForgotPasswordForm(request.POST)
@@ -148,10 +149,13 @@ def forgot_password(request):
             'token':token
             })
 
-            send_mail(subject=subject,message=message, 'noreply@example.com',[email])
+            send_mail(subject=subject,
+                    message=message,
+                    from_email='noreply@gmail.com',
+                    recipient_list=[email])
             messages.success(request,'Email has been sent.')
 
-    return render(request, 'blogs/forgot_password.html')
+    return render(request, 'blogs/forgot_password.html',{'form':form})
 
 def reset_password(request):
     pass
