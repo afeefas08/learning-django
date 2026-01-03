@@ -90,6 +90,7 @@ def register(request):
             user.set_password(form.cleaned_data['password'])  #hashing password.
             user.save()
             messages.success(request, 'Registration Successfull. You can log in.')
+            return redirect("blog:login")
 
 
     return render(request, 'blogs/register.html',{'form': form})
