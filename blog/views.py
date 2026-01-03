@@ -5,7 +5,7 @@ import logging
 from .models import Post, AboutUs
 from django.http import Http404
 from django.core.paginator import Paginator
-from .forms import ContactForm, RegisterForm
+from .forms import ContactForm, LoginForm, RegisterForm
 from django.contrib import messages
 
 # Create your views here.
@@ -94,4 +94,10 @@ def register(request):
     return render(request, 'blogs/register.html',{'form': form})
 
 def login(request):
-    return render(request, 'blogs/login.html')
+    form = LoginForm()
+    if request.method == 'POST':
+        #login form
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            print('LOGIN SUCCESS')
+    return render(request, 'blogs/login.html',{'form': form})
