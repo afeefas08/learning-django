@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
+from blog.models import Category, Post
+
 class ContactForm(forms.Form):
     name = forms.CharField(label='Name', max_length=100,required= True)
     email = forms.EmailField(label='Email',required= True)
@@ -61,3 +63,23 @@ class ResetPasswordForm(forms.Form):
 
         if new_password and confirm_password and new_password != confirm_password:
             raise forms.ValidationError('Passwords do not match!!')
+        
+class PostForm(forms.ModelForm): # it's added to blog_post, so we add ModelForm.
+    title = forms.CharField(label='Title',max_length=200, required=True)
+    content = forms.CharField(label='Content', required=True)
+    category = forms.ModelChoiceField(label='Category', required=True, queryset=Category.objects.all())
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'category'] 
+
+    def clean(self):
+        cleaned_data =  super().clean()
+        title = cleaned_data.get('title')
+        content = cleaned_data.get('content')
+
+        #custom validation
+        if title and len(title) < 5 :
+            raise forms.ValidationError('Title must be atleast 5 characters long.')
+        if content and len(content) < 10 :
+            raise forms.ValidationError('Content must be atleast 10 characters long. ')
