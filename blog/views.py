@@ -123,8 +123,15 @@ def login(request):
 
 def dashboard(request):
     blog_title = 'My Posts'
+    #getting user posts
+    all_posts =  Post.objects.filter(user=request.user)
 
-    return render(request, 'blogs/dashboard.html',{'blog_title':blog_title})
+    #paginate
+    paginator = Paginator(all_posts, 5)
+    page_number = request.GET.get('page')
+    page_object = paginator.get_page(page_number) 
+
+    return render(request, 'blogs/dashboard.html',{'blog_title':blog_title, 'page_obj':page_object})
 
 def logout(request):
     auth_logout(request)
