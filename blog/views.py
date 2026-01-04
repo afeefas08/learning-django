@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.urls import reverse
 import logging
-from .models import Post, AboutUs
+from .models import Category, Post, AboutUs
 from django.http import Http404
 from django.core.paginator import Paginator
 from .forms import ContactForm, ForgotPasswordForm, LoginForm, RegisterForm, ResetPasswordForm
@@ -186,3 +186,7 @@ def reset_password(request, uidb64, token):
                 messages.error(request,'The password reset link is invalid.')
 
     return render(request, 'blogs/reset_password.html',{'form':form})
+
+def new_post(request):
+    categories = Category.objects.all()
+    return render(request, 'blogs/new_post.html',{'categories':categories})
