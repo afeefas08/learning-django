@@ -194,8 +194,8 @@ def new_post(request):
         #form
         form = PostForm(request.POST)
         if form.is_valid():
-            post = form.save()
+            post = form.save(commit=False)
             post.user = request.user
-            post.save()
+            post.save()  # commit = True
             return redirect('blog:dashboard')
     return render(request, 'blogs/new_post.html',{'categories':categories,'form':form})

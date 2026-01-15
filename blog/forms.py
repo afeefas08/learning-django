@@ -83,3 +83,14 @@ class PostForm(forms.ModelForm): # it's added to blog_post, so we add ModelForm.
             raise forms.ValidationError('Title must be atleast 5 characters long.')
         if content and len(content) < 10 :
             raise forms.ValidationError('Content must be atleast 10 characters long. ')
+        
+    def save(self, commit = ...):
+
+        post = super().save(commit)
+
+        img_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/330px-No_image_available.svg.png?20251111182856'
+
+        post.img_url = img_url
+        if commit:
+            post.save()
+        return post
