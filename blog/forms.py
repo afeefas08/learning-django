@@ -68,10 +68,11 @@ class PostForm(forms.ModelForm): # it's added to blog_post, so we add ModelForm.
     title = forms.CharField(label='Title',max_length=200, required=True)
     content = forms.CharField(label='Content', required=True)
     category = forms.ModelChoiceField(label='Category', required=True, queryset=Category.objects.all())
+    img_url = forms.ImageField(label='image', required=False)
 
     class Meta:
         model = Post
-        fields = ['title', 'content', 'category'] 
+        fields = ['title', 'content', 'category','img_url'] 
 
     def clean(self):
         cleaned_data =  super().clean()
@@ -87,10 +88,14 @@ class PostForm(forms.ModelForm): # it's added to blog_post, so we add ModelForm.
     def save(self, commit = ...):
 
         post = super().save(commit)
+        cleaned_data =  super().clean()
 
-        img_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/330px-No_image_available.svg.png?20251111182856'
+        if cleaned_data.get('img_url'):
+            post.img_url = cleaned_data.get('img_url')
+        else:
+            img_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/330px-No_image_available.svg.png?20251111182856'
+            post.img_url = img_url
 
-        post.img_url = img_url
         if commit:
             post.save()
         return post

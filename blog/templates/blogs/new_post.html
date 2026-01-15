@@ -11,7 +11,7 @@
                 </div>
     
                 <div class="my-3">
-                    <form method="post">
+                    <form method="post" enctype = 'multipart/form-data'>  <!-- img related data sent -->
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="title" class="form-label">Title</label>
@@ -21,6 +21,11 @@
                         <div class="form-group">
                             <label for="content" class="form-label">Content</label>
                             <textarea class="form-control" id="content" name="content"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content" class="image">Image</label>
+                            <input type='file' name="img_url" id="" class="form-control-file">
                         </div>
     
                         <div class="form-group">
