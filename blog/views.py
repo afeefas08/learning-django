@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from .forms import ContactForm, ForgotPasswordForm, LoginForm, PostForm, RegisterForm, ResetPasswordForm
 
 #accounts/views.py
-from django.shortcuts import render , redirect
+from django.shortcuts import get_object_or_404, render , redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login , logout as auth_logout
 from django.contrib.auth.models import User
@@ -199,3 +199,18 @@ def new_post(request):
             post.save()  # commit = True
             return redirect('blog:dashboard')
     return render(request, 'blogs/new_post.html',{'categories':categories,'form':form})
+
+def edit_post(request, post_id):
+    categories = Category.objects.all()
+    post = get_object_or_404(Post, id=post_id)
+
+    form = PostForm()
+    if request.method == 'POST':
+        #form
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Post updated successfully !')
+            return redirect('blog:dashboard')
+
+    return render(request, 'blogs/edit_post.html',{'categories':categories, 'post':post, 'form':form})
