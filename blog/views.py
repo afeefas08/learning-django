@@ -214,3 +214,10 @@ def edit_post(request, post_id):
             return redirect('blog:dashboard')
 
     return render(request, 'blogs/edit_post.html',{'categories':categories, 'post':post, 'form':form})
+
+def delete_post(request,post_id):
+    post = get_object_or_404(Post, id=post_id)
+    post.delete()
+    messages.success(request, 'Post Deleted successfully !')
+
+    return redirect('blog:dashboard')
