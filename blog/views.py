@@ -33,7 +33,7 @@ from django.core.mail import send_mail
 def index(request):
     blog_title = 'Latest posts'
     # getting data from post model.
-    all_posts = Post.objects.all()
+    all_posts = Post.objects.filter(is_published=True)
     
     #paginate
     paginator = Paginator(all_posts, 5)
@@ -219,5 +219,13 @@ def delete_post(request,post_id):
     post = get_object_or_404(Post, id=post_id)
     post.delete()
     messages.success(request, 'Post Deleted successfully !')
+
+    return redirect('blog:dashboard')
+
+def publish_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    post.is_published = True
+    post.save()
+    messages.success(request, 'Post Published successfully !')
 
     return redirect('blog:dashboard')
